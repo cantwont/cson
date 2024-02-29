@@ -18,6 +18,8 @@ public:
 
 	void setJsonVal(const std::string& key, const nlohmann::json& value);
 
+	nlohmann::json getJsonVal(const std::string& key);
+
 private:
 	std::wstring stringToWideString(const std::string& str);
 };

@@ -48,6 +48,29 @@ void JSONDatabase::setJsonVal(const std::string& key, const nlohmann::json& valu
     }
 }
 
+nlohmann::json JSONDatabase::getJsonVal(const std::string& key) {
+    std::string databasePath = filePath + "/" + dbName + ".json";
+
+    std::ifstream file(databasePath);
+    nlohmann::json database;
+    if (file.is_open()) {
+        file >> database;
+        file.close();
+    }
+    else {
+        std::cerr << "Error: Unable to open database file for reading" << std::endl;
+        return nlohmann::json();
+    }
+
+    if (database.find(key) != database.end()) {
+        return database[key];
+    }
+    else {
+        std::cerr << "Error: Key '" << key << "' not found in the database" << std::endl;
+        return nlohmann::json();
+    }
+}
+
 std::wstring JSONDatabase::stringToWideString(const std::string& str) {
     int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
     std::wstring wide_str(size_needed, 0);
